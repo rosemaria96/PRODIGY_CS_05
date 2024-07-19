@@ -4,7 +4,7 @@
 #include <netinet/if_ether.h>
 #include <arpa/inet.h>
 
-// Callback function called by pcap for every captured packet
+
 void packet_handler(u_char *user_data, const struct pcap_pkthdr* pkthdr, const u_char* packet) {
     struct ether_header *eth_header;
     eth_header = (struct ether_header *) packet;
@@ -25,7 +25,7 @@ int main() {
     char errbuf[PCAP_ERRBUF_SIZE]; 
     pcap_t *handle; 
 
-    // Find a device
+   
     dev = pcap_lookupdev(errbuf);
     if (dev == NULL) {
         fprintf(stderr, "Couldn't find default device: %s\n", errbuf);
@@ -34,14 +34,14 @@ int main() {
 
     printf("Using device: %s\n", dev);
 
-    // Open the session in promiscuous mode
+    
     handle = pcap_open_live(dev, BUFSIZ, 1, 1000, errbuf);
     if (handle == NULL) {
         fprintf(stderr, "Couldn't open device %s: %s\n", dev, errbuf);
         return 1;
     }
 
-    // Capture packets
+   
     pcap_loop(handle, 10, packet_handler, NULL);
 
     // Close the session
